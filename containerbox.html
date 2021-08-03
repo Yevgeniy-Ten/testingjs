@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <style>
+        .main {
+            display: inline-flex;
+            padding: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin:20px;
+            border: 1px solid black;
+        }
+
+        .box {
+            width: 100px;
+            background: orange;
+            height: 100px;
+            margin:20px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            margin: 10px 20px;
+        }
+
+        .btn-parent {
+            position: relative;
+        }
+
+        .btn-add:hover ~ .btns {
+            visibility: visible;
+            overflow: visible;
+        }
+
+        .btns:hover {
+            visibility: visible;
+            overflow: visible;
+        }
+
+        .btns {
+            position: absolute;
+            top: -15px;
+            left: -40px;
+            border: 1px solid black;
+            display: flex;
+            z-index: 100;
+            overflow: hidden;
+            visibility: hidden;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    class Main {
+        constructor() {
+            this.parent = document.createElement("div")
+            this.addBtn = document.createElement("button")
+            this.boxBtnsParent = document.createElement("div")
+            this.boxBtn = document.createElement("button")
+            this.containerBtn = document.createElement("button")
+            this.btns = document.createElement("div")
+        }
+
+        addClasses() {
+            this.parent.classList.add("main")
+            this.addBtn.classList.add("btn")
+            this.addBtn.classList.add("btn-add")
+            this.boxBtn.classList.add("btn")
+            this.containerBtn.classList.add("btn")
+            this.boxBtnsParent.classList.add("btn-parent")
+            this.btns.classList.add("btns")
+        }
+
+        createBox() {
+            this.box = document.createElement("div")
+            this.box.classList.add("box")
+        }
+
+        initTxt() {
+            this.addBtn.innerText = "Add"
+            this.boxBtn.innerText = "Box"
+            this.containerBtn.innerText = "Container"
+        }
+
+        createStructure() {
+            this.btns.appendChild(this.boxBtn)
+            this.btns.appendChild(this.containerBtn)
+            this.boxBtnsParent.appendChild(this.addBtn)
+            this.boxBtnsParent.appendChild(this.btns)
+            this.parent.appendChild(this.boxBtnsParent)
+        }
+
+        addListeners() {
+            this.boxBtn.addEventListener("click", () => {
+                this.createBox()
+                this.parent.prepend(this.box)
+            })
+            this.containerBtn.addEventListener("click", () => {
+                this.parent.appendChild(new Main().render())
+            })
+        }
+
+        render() {
+            this.initTxt()
+            this.addClasses()
+            this.addListeners()
+            this.createStructure()
+            return this.parent
+        }
+
+        init() {
+            document.querySelector("body").appendChild(new Main().render())
+        }
+    }
+
+    new Main().init()
+</script>
+</body>
+</html>
